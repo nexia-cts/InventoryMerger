@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "inventory-merger",
+  "version": "${version}",
+  "name": "Inventory Merger",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "LGPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.blumbo.inventorymerger.InventoryMerger"
+    ]
+  },
+  "mixins": [
+    "inventory-merger.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "fabric": "*",
+    "minecraft": "1.20.1"
+  }
+}
