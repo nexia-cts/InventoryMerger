@@ -1,15 +1,17 @@
 package net.blumbo.inventorymerger;
 
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class InventoryMergerImpl {
 
-    protected static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items) {
+    protected static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items, boolean dropLeftover) {
 
         PlayerInventory inv = player.getInventory();
         inv.clear();
@@ -20,6 +22,8 @@ public class InventoryMergerImpl {
         addNormally(inv, itemBulks, true);
         mergeToKitLayout(inv, itemBulks);
         addNormally(inv, itemBulks, false);
+
+        if (dropLeftover) dropLeftovers(player, itemBulks);
     }
 
     private static void mergeToGivenLayout(PlayerInventory inv, ItemStack[] layout, ArrayList<ItemBulk> itemBulks) {
@@ -61,6 +65,29 @@ public class InventoryMergerImpl {
                 bulk.decrement(amount);
             }
         }
+    }
+
+    private static void dropLeftovers(ServerPlayerEntity player, ArrayList<ItemBulk> itemBulks) {
+        for (ItemBulk bulk : itemBulks) {
+            ItemStack bulkStack = bulk.itemStack;
+            while (bulkStack.getCount() > 0) {
+                if (bulkStack.getCount() <= bulkStack.getMaxCount()) {
+                    spawnItem(player, bulkStack);
+                    break;
+                }
+                ItemStack itemStack = bulkStack.copy();
+                itemStack.setCount(itemStack.getMaxCount());
+                bulkStack.decrement(itemStack.getCount());
+                spawnItem(player, itemStack);
+            }
+        }
+    }
+
+    private static void spawnItem(ServerPlayerEntity player, ItemStack itemStack) {
+        Vec3d pos = player.getEyePos().add(0, -0.3, 0);
+        ItemEntity itemEntity = new ItemEntity(player.getServerWorld(), pos.x, pos.y, pos.z, itemStack,
+            0, 0, 0);
+        player.getServerWorld().spawnEntity(itemEntity);
     }
 
     private static void addNormally(PlayerInventory inv, ArrayList<ItemBulk> itemBulks, boolean addToExistingStacks) {

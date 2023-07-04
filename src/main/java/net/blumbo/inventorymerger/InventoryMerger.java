@@ -15,9 +15,11 @@ public class InventoryMerger implements ModInitializer {
      * @param player Player who will be given the items. Their inventory will be cleared first!
      * @param layout Inventory layout which the given items will attempt to follow.
      * @param items Given items.
+     * @param dropLeftover Drop items that won't fit into the layout.
+     *                     Items that don't fit will be lost if set to false.
      */
-    public static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items) {
-        InventoryMergerImpl.merge(player, layout, items);
+    public static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items, boolean dropLeftover) {
+        InventoryMergerImpl.merge(player, layout, items, dropLeftover);
     }
 
     /**
