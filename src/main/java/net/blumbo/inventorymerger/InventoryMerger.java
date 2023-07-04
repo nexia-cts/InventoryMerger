@@ -23,11 +23,32 @@ public class InventoryMerger implements ModInitializer {
     }
 
     /**
-     * Makes sure all items fit into the inventory by stacking them up immediately, instead of exactly matching
+     * Identical to
+     * {@link InventoryMerger#merge(ServerPlayerEntity, ItemStack[], ItemStack[], boolean)},
+     * but takes player inventories as arguments.
+     */
+    public static void merge(ServerPlayerEntity player, PlayerInventory layout, PlayerInventory items,
+                             boolean dropLeftover) {
+        InventoryMergerImpl.merge(player, invToItemArray(layout), invToItemArray(items), dropLeftover, false);
+    }
+
+    /**
+     * Similar to {@link InventoryMerger#merge(ServerPlayerEntity, ItemStack[], ItemStack[], boolean)},
+     * but makes sure all items fit into the inventory by stacking them up immediately, instead of exactly matching
      * item amounts in provided layout.
      */
     public static void mergeSafe(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items) {
         InventoryMergerImpl.merge(player, layout, items, false, true);
+    }
+
+    /**
+     * Identical to
+     * {@link InventoryMerger#mergeSafe(ServerPlayerEntity, ItemStack[], ItemStack[])},
+     * but takes player inventories as arguments.
+     */
+    public static void mergeSafe(ServerPlayerEntity player, PlayerInventory layout, PlayerInventory items) {
+        InventoryMergerImpl.merge(player, invToItemArray(layout), invToItemArray(items),
+            false, true);
     }
 
     /**
