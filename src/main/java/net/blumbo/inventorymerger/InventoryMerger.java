@@ -19,7 +19,15 @@ public class InventoryMerger implements ModInitializer {
      *                     Items that don't fit will be lost if set to false.
      */
     public static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items, boolean dropLeftover) {
-        InventoryMergerImpl.merge(player, layout, items, dropLeftover);
+        InventoryMergerImpl.merge(player, layout, items, dropLeftover, false);
+    }
+
+    /**
+     * Makes sure all items fit into the inventory by stacking them up immediately, instead of exactly matching
+     * item amounts in provided layout.
+     */
+    public static void mergeSafe(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items) {
+        InventoryMergerImpl.merge(player, layout, items, false, true);
     }
 
     /**

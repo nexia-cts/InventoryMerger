@@ -11,14 +11,15 @@ import java.util.Iterator;
 
 public class InventoryMergerImpl {
 
-    protected static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items, boolean dropLeftover) {
+    protected static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items,
+                                boolean dropLeftover, boolean safeMerge) {
 
         PlayerInventory inv = player.getInventory();
         inv.clear();
 
         ArrayList<ItemBulk> itemBulks = itemArrayToBulk(items);
 
-        mergeToGivenLayout(inv, layout, itemBulks);
+        mergeToGivenLayout(inv, layout, itemBulks, safeMerge);
         addNormally(inv, itemBulks, true);
         mergeToKitLayout(inv, itemBulks);
         addNormally(inv, itemBulks, false);
@@ -26,7 +27,8 @@ public class InventoryMergerImpl {
         if (dropLeftover) dropLeftovers(player, itemBulks);
     }
 
-    private static void mergeToGivenLayout(PlayerInventory inv, ItemStack[] layout, ArrayList<ItemBulk> itemBulks) {
+    private static void mergeToGivenLayout(PlayerInventory inv, ItemStack[] layout, ArrayList<ItemBulk> itemBulks,
+                                           boolean safeMerge) {
         for (int i = 0; i < layout.length; i++) {
             int slot = getPrioritySlot(i);
             ItemStack layoutStack = layout[slot];
@@ -39,7 +41,10 @@ public class InventoryMergerImpl {
                 ItemStack stackToAdd = itemBulk.itemStack;
                 if (!ItemStack.canCombine(layoutStack, stackToAdd)) continue;
 
-                int count = Math.min(layoutStack.getCount(), itemBulk.getCount());
+                int count;
+                if (safeMerge) count = Math.min(itemBulk.itemStack.getMaxCount(), itemBulk.getCount());
+                else count = Math.min(layoutStack.getCount(), itemBulk.getCount());
+
                 ItemStack newStack = stackToAdd.copy();
                 newStack.setCount(count);
                 inv.setStack(slot, newStack);
