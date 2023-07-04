@@ -1,3 +1,4 @@
 # InventoryMerger
-A Fabric library mod to merge items into an inventory layout.  
-Allows servers to use player specified inventory layouts for different types of games.
+A Fabric library mod to easily merge, save and load inventories.  
+  
+Allows you to add items to an inventory while following a specified layout. Can be used to let players create custom inventory layouts for kits that might change in the future.
