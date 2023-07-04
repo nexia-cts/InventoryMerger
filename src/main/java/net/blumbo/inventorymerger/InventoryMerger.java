@@ -52,7 +52,7 @@ public class InventoryMerger implements ModInitializer {
     }
 
     /**
-     * A utility method to copy ItemStacks from a PlayerInventory to an Array.
+     * Copy ItemStacks from a PlayerInventory to an Array.
      * @param inv Source inventory.
      * @return Array of copied ItemStacks.
      */
@@ -64,6 +64,19 @@ public class InventoryMerger implements ModInitializer {
             items[i] = itemStack.copy();
         }
         return items;
+    }
+
+    /**
+     * Create a copy of an Inventory with copied ItemStacks.
+     * @param inventory Inventory to clone.
+     * @return Cloned Inventory.
+     */
+    public static PlayerInventory copyInventory(PlayerInventory inventory) {
+        PlayerInventory newInv = new PlayerInventory(inventory.player);
+        for (int i = 0; i < inventory.size(); i++) {
+            newInv.setStack(i, inventory.getStack(i).copy());
+        }
+        return newInv;
     }
 
 }
