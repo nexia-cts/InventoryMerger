@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.blumbo.inventorymerger.mixin",
+  "package": "io.github.blumbo.inventorymerger.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],

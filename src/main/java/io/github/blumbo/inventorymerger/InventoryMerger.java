@@ -1,4 +1,4 @@
-package net.blumbo.inventorymerger;
+package io.github.blumbo.inventorymerger;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.player.PlayerInventory;

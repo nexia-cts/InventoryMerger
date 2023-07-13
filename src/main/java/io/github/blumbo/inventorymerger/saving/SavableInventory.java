@@ -1,4 +1,4 @@
-package net.blumbo.inventorymerger.saving;
+package io.github.blumbo.inventorymerger.saving;
 
 import com.google.gson.Gson;
 import net.minecraft.entity.player.PlayerInventory;

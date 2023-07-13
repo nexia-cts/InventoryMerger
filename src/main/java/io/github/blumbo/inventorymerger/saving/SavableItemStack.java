@@ -1,4 +1,4 @@
-package net.blumbo.inventorymerger.saving;
+package io.github.blumbo.inventorymerger.saving;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.item.Item;

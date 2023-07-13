@@ -10,7 +10,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.blumbo.inventorymerger.InventoryMerger"
+      "io.github.blumbo.inventorymerger.InventoryMerger"
     ]
   },
   "mixins": [
