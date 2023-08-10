@@ -14,7 +14,7 @@ public class InventoryMergerImpl {
     protected static void merge(ServerPlayerEntity player, ItemStack[] layout, ItemStack[] items,
                                 boolean dropLeftover, boolean safeMerge) {
 
-        PlayerInventory inv = player.getInventory();
+        PlayerInventory inv = player.inventory;
         inv.clear();
 
         ArrayList<ItemBulk> itemBulks = itemArrayToBulk(items);
@@ -39,7 +39,7 @@ public class InventoryMergerImpl {
             while (it.hasNext()) {
                 ItemBulk itemBulk = it.next();
                 ItemStack stackToAdd = itemBulk.itemStack;
-                if (!ItemStack.canCombine(layoutStack, stackToAdd)) continue;
+                if (!ItemStack.areItemsEqual(layoutStack, stackToAdd)) continue;
 
                 int count;
                 if (safeMerge) count = Math.min(itemBulk.itemStack.getMaxCount(), itemBulk.getCount());
@@ -89,9 +89,8 @@ public class InventoryMergerImpl {
     }
 
     private static void spawnItem(ServerPlayerEntity player, ItemStack itemStack) {
-        Vec3d pos = player.getEyePos().add(0, -0.3, 0);
-        ItemEntity itemEntity = new ItemEntity(player.getServerWorld(), pos.x, pos.y, pos.z, itemStack,
-            0, 0, 0);
+        Vec3d pos = player.getPos().add(0, -0.3, 0);
+        ItemEntity itemEntity = new ItemEntity(player.getServerWorld(), pos.x, pos.y, pos.z, itemStack);
         player.getServerWorld().spawnEntity(itemEntity);
     }
 
@@ -109,7 +108,7 @@ public class InventoryMergerImpl {
 
             if (addToExistingStack) {
                 if (invStack.isEmpty()) continue;
-                if (!ItemStack.canCombine(bulkStack, invStack)) continue;
+                if (!ItemStack.areItemsEqual(bulkStack, invStack)) continue;
 
                 count = Math.min(bulkStack.getCount(), bulkStack.getMaxCount() - invStack.getCount());
                 invStack.increment(count);
@@ -138,7 +137,7 @@ public class InventoryMergerImpl {
 
             boolean matchFound = false;
             for (ItemBulk itemBulk : bulkList) {
-                if (!ItemStack.canCombine(arrayStack, itemBulk.itemStack)) continue;
+                if (!ItemStack.areItemsEqual(arrayStack, itemBulk.itemStack)) continue;
                 matchFound = true;
                 itemBulk.addSlot(slot, arrayStack.getCount());
             }
